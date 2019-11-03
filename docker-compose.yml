@@ -5,7 +5,7 @@ services:
    image: mysql
    environment:
     MYSQL_DATABASE: fonyou
-    MYSQL_ROOT_PASSWORD: Nexus123
+    MYSQL_ROOT_PASSWORD: Test123
     MYSQL_ROOT_HOST: '%'
    ports:
    - "3306:3306"
