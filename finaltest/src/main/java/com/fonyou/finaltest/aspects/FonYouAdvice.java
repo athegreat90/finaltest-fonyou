@@ -28,7 +28,6 @@ public class FonYouAdvice
 	public void before(JoinPoint joinPoint) 
 	{
 		this.logger.info("Before execution of method (Signature): " + joinPoint.getSignature());
-//		System.out.println("Before execution of method (Target): " + joinPoint.getTarget());
 		
 	}
 	
@@ -36,21 +35,18 @@ public class FonYouAdvice
 	public void beforeValidation(JoinPoint joinPoint) 
 	{
 		this.logger.info("Before execution of method (Signature): " + joinPoint.getSignature());
-//		System.out.println("Before execution of method (Target): " + joinPoint.getTarget());
 	}
 	
 	@After(value = "execution(* com.fonyou.finaltest.util.ValidationEmployee.*(..))")
 	public void afterValidation(JoinPoint joinPoint) 
 	{
 		this.logger.info("After execution of method (Signature): " + joinPoint.getSignature());
-//		System.out.println("After execution of method (Target): " + joinPoint.getTarget());
 	}
 	
 	@After(value = "execution(* com.fonyou.finaltest.service.impl.EmployeeService.*(..))")
 	public void afterMethod(JoinPoint joinPoint)
 	{
 		this.logger.info("After execution of method (Signature): " + joinPoint.getSignature());
-//		System.out.println("After execution of method (Target): " + joinPoint.getTarget());
 	}
 //	
 //	@Before(value = "execution(* com.fonyou.finaltest.controller.EmployeeController.*(..))")
@@ -63,6 +59,5 @@ public class FonYouAdvice
 	public void after(JoinPoint joinPoint, Object result) 
 	{
 		this.logger.info("After execution of " + joinPoint.getSignature() + " - Result: " + result);
-//		System.out.println("After execution of method (Target): " + joinPoint.getTarget());
 	}
 }

@@ -10,10 +10,6 @@ public class FinaltestApplication
 	public static void main(String[] args) 
 	{
 		SpringApplication.run(FinaltestApplication.class, args);
-//		for (String bean : run.getBeanDefinitionNames())
-//		{
-//			System.out.println("Bean: " + bean);
-//		}
 	}
 
 }
