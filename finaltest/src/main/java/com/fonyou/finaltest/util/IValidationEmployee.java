@@ -6,6 +6,6 @@ import com.fonyou.finaltest.dto.EmployeeDto;
 
 public interface IValidationEmployee
 {
-	public List<String> validate(EmployeeDto employee) throws IllegalArgumentException;
+	public List<String> validate(EmployeeDto employee) throws IllegalArgumentException, Exception;
 	public String validateId(String id) throws Exception;
 }

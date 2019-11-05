@@ -7,12 +7,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class FinaltestApplicationTests {
-
+public class FinaltestApplicationTests 
+{
 	@Test
-	public void contextLoads()
-	{
-		throw new UnsupportedOperationException();
-	}
+	public void contextLoads() {}
 
 }

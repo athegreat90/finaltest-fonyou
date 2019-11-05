@@ -106,7 +106,7 @@ public class EmployeeService implements IEmployeeService
 		return entity.getId();
 	}
 
-	private void validateData(EmployeeDto body) throws IllegalArgumentException
+	private void validateData(EmployeeDto body) throws Exception
 	{
 		List<String> errors = this.validation.validate(body);
 		if (!errors.isEmpty())

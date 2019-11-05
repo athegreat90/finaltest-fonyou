@@ -1,30 +1,37 @@
-version: '3.1'
+version: '3.7'
 services:
   fonyou-mysql:
-   container_name: fonyou-mysql
-   image: mysql
-   environment:
-    MYSQL_DATABASE: fonyou
-    MYSQL_ROOT_PASSWORD: Test123
-    MYSQL_ROOT_HOST: '%'
-   ports:
-   - "3306:3306"
-   volumes:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: fonyou
+      MYSQL_ROOT_PASSWORD: Test123
+      MYSQL_ROOT_HOST: '%'
+    ports:
+    - "3306:3306"
+    volumes:
       - fonyou-data:/var/lib/mysql
+    networks: 
+      - backend
   
   app:
-    build: ./finaltest
-    working_dir: /finaltest
-    volumes:
-      - ./finaltest:/app
-      - ~/.m2:/root/.m2
-    expose:
-      - "8080"
+    build: 
+      context: finaltest
+      dockerfile: Dockerfile
     ports: 
       - "80:8080"
-    command: mvn clean spring-boot:run
+    restart: always
     depends_on:
       - fonyou-mysql
+    environment: # Pass environment variables to the service
+      SPRING_DATASOURCE_URL: jdbc:mysql://fonyou-mysql:3306/fonyou?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: Test123
+    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+      - backend
 
 volumes:
   fonyou-data:
+
+networks: 
+  backend:
