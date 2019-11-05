@@ -56,31 +56,25 @@ public class EmployeeService implements IEmployeeService
 	public List<EmployeeDto> findAll() throws Exception
 	{
 		Type listType = new TypeToken<List<EmployeeDto>>() {}.getType();
-		List<EmployeeDto> result = this.modelMapper.map(repo.findAll(), listType);
-		return result;
+		return this.modelMapper.map(repo.findAll(), listType);
 	}
 
 	/**
 	 * Find an employee by id.
 	 *
-	 * @param String id: the id of the employee
+	 * @param id: the id of the employee
 	 * @return the employee transformed
 	 * @throws Exception the exception
 	 */
 	@Override
 	public EmployeeDto findById(String id) throws Exception
 	{
-		String errorId = this.validation.validateId(id);
-		if (!errorId.isEmpty() || errorId.length() > 0)
-		{
-			throw new IllegalArgumentException(errorId);
-		}
+		validateId(id);
 		Integer idT = Integer.parseInt(id);
 		Optional<Employee> employee = this.repo.findById(idT);
 		if (employee.isPresent())
 		{
-			EmployeeDto result = this.modelMapper.map(employee.get(), EmployeeDto.class);
-			return result;
+			return this.modelMapper.map(employee.get(), EmployeeDto.class);
 		}
 		else
 		{
@@ -88,18 +82,34 @@ public class EmployeeService implements IEmployeeService
 		}
 	}
 
+	private void validateId(String id) throws Exception {
+		String errorId = this.validation.validateId(id);
+		if (!errorId.isEmpty() || errorId.length() > 0)
+		{
+			throw new IllegalArgumentException(errorId);
+		}
+	}
+
 	/**
 	 * Save a new employee.
 	 *
-	 * @param EmployeeDto body: the new employee
+	 * @param body: the new employee
 	 * @return the ID of the new employee
 	 * @throws Exception the exception
 	 */
 	@Override
 	public int save(EmployeeDto body) throws Exception
 	{
+		validateData(body);
+		Employee entity = this.modelMapper.map(body, Employee.class);
+		entity = this.repo.saveAndFlush(entity);
+		return entity.getId();
+	}
+
+	private void validateData(EmployeeDto body) throws IllegalArgumentException
+	{
 		List<String> errors = this.validation.validate(body);
-		if (!errors.isEmpty() || errors.size() > 0)
+		if (!errors.isEmpty())
 		{
 			StringBuilder finalError = new StringBuilder();
 			for (String error : errors)
@@ -108,16 +118,13 @@ public class EmployeeService implements IEmployeeService
 			}
 			throw new IllegalArgumentException(finalError.toString().trim());
 		}
-		Employee entity = this.modelMapper.map(body, Employee.class);
-		entity = this.repo.saveAndFlush(entity);
-		return entity.getId();
 	}
 
 	/**
 	 * Update an exist employee.
 	 *
-	 * @param String id: the ID of the employee
-	 * @param EmployeeDto body: the changed fields of the employee
+	 * @param id: the ID of the employee
+	 * @param body: the changed fields of the employee
 	 * @return true, if successful
 	 * @throws Exception the exception
 	 */
@@ -130,18 +137,8 @@ public class EmployeeService implements IEmployeeService
 			throw new IllegalArgumentException(errorId);
 		}
 		Integer idT = Integer.parseInt(id);
-		
-		List<String> errors = this.validation.validate(body);
-		if (!errors.isEmpty() || errors.size() > 0)
-		{
-			StringBuilder finalError = new StringBuilder();
-			for (String error : errors)
-			{
-				finalError.append(error).append("\n");
-			}
-			
-			throw new IllegalArgumentException(finalError.toString().trim());
-		}
+
+		validateData(body);
 		if (body.getId() < 0)
 		{
 			body.setId(idT);
@@ -152,7 +149,7 @@ public class EmployeeService implements IEmployeeService
 		if (savedEmployee.isPresent())
 		{
 			Employee entity = this.modelMapper.map(body, Employee.class);
-			entity = this.repo.saveAndFlush(entity);
+			this.repo.saveAndFlush(entity);
 			return true;
 		}
 		else 
@@ -164,18 +161,14 @@ public class EmployeeService implements IEmployeeService
 	/**
 	 * Delete an employee.
 	 *
-	 * @param String id: the id of the old employee
+	 * @param id: the id of the old employee
 	 * @return A message if was fine
 	 * @throws Exception the exception
 	 */
 	@Override
 	public String delete(String id) throws Exception
 	{
-		String errorId = this.validation.validateId(id);
-		if (!errorId.isEmpty() || errorId.length() > 0)
-		{
-			throw new IllegalArgumentException(errorId);
-		}
+		validateId(id);
 		Integer idT = Integer.parseInt(id);
 		Optional<Employee> employee = this.repo.findById(idT);
 		if (employee.isPresent())

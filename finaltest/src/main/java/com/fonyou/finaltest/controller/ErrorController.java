@@ -19,65 +19,62 @@ import com.fonyou.finaltest.dto.ResponseGenericDto;
 @RestControllerAdvice
 public class ErrorController
 {
-	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
+	private static final Logger LOGGER = LoggerFactory.getLogger(ErrorController.class);
 	/**
 	 * Handle IllegalArgumentException.
 	 *
-	 * @param IllegalArgumentException the exception
+	 * @param exception the exception
 	 * @return the message of the error
 	 */
 	@ExceptionHandler
 	public ResponseEntity<ResponseGenericDto<String>> handleException(IllegalArgumentException exception)
 	{
-		System.out.println("It was an illegal, sorry");
 		LOGGER.error(exception.getMessage(), exception);
-		ResponseGenericDto<String> body = new ResponseGenericDto<String>("1", "Failed validation", exception.getMessage(), false);
-		return new ResponseEntity<ResponseGenericDto<String>>(body, HttpStatus.PRECONDITION_REQUIRED);
+		ResponseGenericDto<String> body = new ResponseGenericDto<>("1", "Failed validation", exception.getMessage(), false);
+		return new ResponseEntity<>(body, HttpStatus.PRECONDITION_REQUIRED);
 	}
 	
 	/**
 	 * Handle NoResultException.
 	 *
-	 * @param NoResultException the exception
+	 * @param exception the exception
 	 * @return the message of the error
 	 */
 	@ExceptionHandler
 	public ResponseEntity<ResponseGenericDto<String>> handleException(NoResultException exception)
 	{
-		System.out.println("Doesn't have something, sorry");
 		LOGGER.error(exception.getMessage(), exception);
-		ResponseGenericDto<String> body = new ResponseGenericDto<String>("1", "Failed content", exception.getMessage(), false);
-		return new ResponseEntity<ResponseGenericDto<String>>(body, HttpStatus.NOT_FOUND);
+		ResponseGenericDto<String> body = new ResponseGenericDto<>("1", "Failed content", exception.getMessage(), false);
+		return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
 	}
 	
 	@ExceptionHandler
 	public ResponseEntity<ResponseGenericDto<String>> handleException(JDBCConnectionException exception)
 	{
 		LOGGER.error(exception.getMessage(), exception);
-		ResponseGenericDto<String> body = new ResponseGenericDto<String>("1", "Failed content", "Error with the database", false);
-		return new ResponseEntity<ResponseGenericDto<String>>(body, HttpStatus.NOT_FOUND);
+		ResponseGenericDto<String> body = new ResponseGenericDto<>("1", "Failed content", "Error with the database", false);
+		return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
 	}
 	
 	@ExceptionHandler
 	public ResponseEntity<ResponseGenericDto<String>> handleException(NullPointerException exception)
 	{
 		LOGGER.error(exception.getMessage(), exception);
-		ResponseGenericDto<String> body = new ResponseGenericDto<String>("1", "Failed content", "Error with the database", false);
-		return new ResponseEntity<ResponseGenericDto<String>>(body, HttpStatus.NOT_FOUND); 
+		ResponseGenericDto<String> body = new ResponseGenericDto<>("1", "Failed content", "Error with the database", false);
+		return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
 	}
 	
 	/**
 	 * Handle Exception.
 	 *
-	 * @param Exception the exception
+	 * @param exception the exception
 	 * @return the message of the error
 	 */
 	@ExceptionHandler
 	public ResponseEntity<ResponseGenericDto<String>> handleException(Exception exception)
 	{
 		LOGGER.error(exception.getMessage(), exception);
-		ResponseGenericDto<String> body = new ResponseGenericDto<String>("1", "Unhandled exception", exception.getLocalizedMessage(), false);
-		System.out.println("\n\n===============> " + exception + "\n\n");
-		return new ResponseEntity<ResponseGenericDto<String>>(body, HttpStatus.BAD_REQUEST);
+		ResponseGenericDto<String> body = new ResponseGenericDto<>("1", "Unhandled exception", exception.getLocalizedMessage(), false);
+		return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
 	}
 }

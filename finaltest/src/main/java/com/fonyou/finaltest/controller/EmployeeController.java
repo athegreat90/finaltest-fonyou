@@ -43,62 +43,62 @@ public class EmployeeController
 	 * @throws Exception the exception
 	 */
 	@GetMapping("/")
-	private ResponseGenericDto<List<EmployeeDto>> findEmployee() throws Exception
+	public ResponseGenericDto<List<EmployeeDto>> findEmployee() throws Exception
 	{
-		return new ResponseGenericDto<List<EmployeeDto>>("0", "OK", this.service.findAll(), true);
+		return new ResponseGenericDto<>("0", "OK", this.service.findAll(), true);
 	}
 	
 	/**
 	 * Find employee by id.
 	 *
-	 * @param String id: The employee
+	 * @param id: The employee
 	 * @return An Employee
 	 * @throws Exception the exception 
 	 */
 	@GetMapping("/{id}")
 	public ResponseGenericDto<EmployeeDto> findEmployee(@PathVariable("id") String id) throws Exception
 	{
-		return new ResponseGenericDto<EmployeeDto>("0", "OK", this.service.findById(id), true);
+		return new ResponseGenericDto<>("0", "OK", this.service.findById(id), true);
 	}
 	
 	/**
 	 * Save employee.
 	 *
-	 * @param EmployeeDto the body
+	 * @param body
 	 * @return The ID of the new employee
 	 * @throws Exception the exception
 	 */
 	@PostMapping("/")
-	private ResponseGenericDto<String> saveEmployee(@RequestBody EmployeeDto body) throws Exception
+	public ResponseGenericDto<String> saveEmployee(@RequestBody EmployeeDto body) throws Exception
 	{
-		return new ResponseGenericDto<String>("0", "OK", "The new employee was created correcty: " + String.valueOf(this.service.save(body)), true);
+		return new ResponseGenericDto<>("0", "OK", "The new employee was created correcty: " + this.service.save(body), true);
 	}
 	
 	/**
 	 * Update employee.
 	 *
-	 * @param String id: The ID of the employee
-	 * @param EmployeeDto the body
+	 * @param id: The ID of the employee
+	 * @param body
 	 * @return A message if the update was fine
 	 * @throws Exception the exception
 	 */
 	@PutMapping("/{id}")
-	private ResponseGenericDto<String> updateEmployee(@PathVariable("id") String id, @RequestBody EmployeeDto body) throws Exception
+	public ResponseGenericDto<String> updateEmployee(@PathVariable("id") String id, @RequestBody EmployeeDto body) throws Exception
 	{
 		String result = this.service.update(id, body) ? "The Employee was updated OK" : "Something is wrong";
-		return new ResponseGenericDto<String>("0", "OK", result, true);
+		return new ResponseGenericDto<>("0", "OK", result, true);
 	}
 	
 	/**
 	 * Delete employee.
 	 *
-	 * @param String id: The ID of the employee
+	 * @param id: The ID of the employee
 	 * @return A message if the employee was removed fine
 	 * @throws Exception the exception
 	 */
 	@DeleteMapping("/{id}")
 	public ResponseGenericDto<String> deleteEmployee(@PathVariable("id") String id) throws Exception
 	{
-		return new ResponseGenericDto<String>("0", "OK", this.service.delete(id), true);
+		return new ResponseGenericDto<>("0", "OK", this.service.delete(id), true);
 	}
 }

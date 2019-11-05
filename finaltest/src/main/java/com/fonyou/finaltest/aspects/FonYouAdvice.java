@@ -15,49 +15,43 @@ import org.springframework.context.annotation.Configuration;
 public class FonYouAdvice
 {
 
-	Logger logger = LoggerFactory.getLogger(FonYouAdvice.class);
+	private static final Logger logger = LoggerFactory.getLogger(FonYouAdvice.class);
 
 	@AfterThrowing(pointcut = "execution(* com.fonyou.finaltest.service.impl.EmployeeService.*(..))", throwing = "error")
 	private void afterThrowing(JoinPoint jp, Throwable error)
 	{
-		System.out.println("Method Signature: "  + jp.getSignature());  
-		System.out.println("Exception: " + error.getMessage());
+		logger.info("Method Signature: {}", jp.getSignature());
+		logger.info("Exception: {}", error.getMessage());
 	}
 	
 	@Before(value = "execution(* com.fonyou.finaltest.service.impl.EmployeeService.*(..))")
 	public void before(JoinPoint joinPoint) 
 	{
-		this.logger.info("Before execution of method (Signature): " + joinPoint.getSignature());
+		logger.info("Before execution of method (Signature): {}", joinPoint.getSignature());
 		
 	}
 	
 	@Before(value = "execution(* com.fonyou.finaltest.util.ValidationEmployee.*(..))")
 	public void beforeValidation(JoinPoint joinPoint) 
 	{
-		this.logger.info("Before execution of method (Signature): " + joinPoint.getSignature());
+		logger.info("Before execution of method (Signature): {}", joinPoint.getSignature());
 	}
 	
 	@After(value = "execution(* com.fonyou.finaltest.util.ValidationEmployee.*(..))")
 	public void afterValidation(JoinPoint joinPoint) 
 	{
-		this.logger.info("After execution of method (Signature): " + joinPoint.getSignature());
+		logger.info("After execution of method (Signature): {}", joinPoint.getSignature());
 	}
 	
 	@After(value = "execution(* com.fonyou.finaltest.service.impl.EmployeeService.*(..))")
 	public void afterMethod(JoinPoint joinPoint)
 	{
-		this.logger.info("After execution of method (Signature): " + joinPoint.getSignature());
+		logger.info("After execution of method (Signature): {}", joinPoint.getSignature());
 	}
-//	
-//	@Before(value = "execution(* com.fonyou.finaltest.controller.EmployeeController.*(..))")
-//	public void beforeController(JoinPoint joinPoint) 
-//	{
-//		System.out.println("Before execution of method: " + joinPoint.getSignature());
-//	}
 	
 	@AfterReturning(value = "execution(* com.fonyou.finaltest.service.impl.EmployeeService.*(..))", returning = "result") 
 	public void after(JoinPoint joinPoint, Object result) 
 	{
-		this.logger.info("After execution of " + joinPoint.getSignature() + " - Result: " + result);
+		logger.info("After execution of {} - Result: {}", joinPoint.getSignature(), result);
 	}
 }

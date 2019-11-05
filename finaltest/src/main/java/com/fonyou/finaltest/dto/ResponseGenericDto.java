@@ -10,7 +10,6 @@ public class ResponseGenericDto<T>
 	public ResponseGenericDto()
 	{
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public ResponseGenericDto(String status, String message, T body, boolean isSuccess)

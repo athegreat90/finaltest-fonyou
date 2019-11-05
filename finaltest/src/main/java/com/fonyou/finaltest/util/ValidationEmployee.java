@@ -22,7 +22,7 @@ public class ValidationEmployee implements IValidationEmployee
 	@Override
 	public List<String> validate(EmployeeDto employee) throws Exception
 	{
-		List<String> result = new ArrayList<String>();
+		List<String> result = new ArrayList<>();
 		if (this.validateString(employee.getFirstName()))
 		{
 			result.add("The first name is missing");

@@ -20,7 +20,8 @@ public class WebMvcConfig implements WebMvcConfigurer
 	 *
 	 * @param ResourceHandlerRegistry registry the registry
 	 */
-	public void addResourceHandlers(ResourceHandlerRegistry registry) 
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry)
 	{
 
 		registry.addResourceHandler("/**/*").addResourceLocations("classpath:/static/").resourceChain(true).addResolver(new PathResourceResolver() 
@@ -36,6 +37,7 @@ public class WebMvcConfig implements WebMvcConfigurer
 	/**
 	 * Manage the requests of the external clients 
 	 */
+	@Override
 	public void addCorsMappings(CorsRegistry registry)
 	{
 		registry.addMapping("/**");
