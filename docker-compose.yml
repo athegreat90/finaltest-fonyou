@@ -1,16 +1,29 @@
 version: '3.7'
 services:
-  fonyou-mysql:
-    image: mysql
+  # fonyou-mysql:
+  #   image: mysql
+  #   restart: always
+  #   environment:
+  #     MYSQL_DATABASE: fonyou
+  #     MYSQL_ROOT_PASSWORD: Test123
+  #     MYSQL_ROOT_HOST: '%'
+  #   ports:
+  #   - "3306:3306"
+  #   volumes:
+  #     - fonyou-data:/var/lib/mysql
+  #   networks: 
+  #     - backend
+
+  fonyou-mongo:
+    image: mongo
     restart: always
-    environment:
-      MYSQL_DATABASE: fonyou
-      MYSQL_ROOT_PASSWORD: Test123
-      MYSQL_ROOT_HOST: '%'
-    ports:
-    - "3306:3306"
-    volumes:
-      - fonyou-data:/var/lib/mysql
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: Test123
+    ports: 
+    - "27017:27017"
+    volumes: 
+      - fonyou-mongo-data:/etc/mongo
     networks: 
       - backend
   
@@ -22,16 +35,18 @@ services:
       - "80:8080"
     restart: always
     depends_on:
-      - fonyou-mysql
-    environment: # Pass environment variables to the service
-      SPRING_DATASOURCE_URL: jdbc:mysql://fonyou-mysql:3306/fonyou?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: Test123
+      - fonyou-mongo
+    # environment: # Pass environment variables to the service
+      # SPRING_DATASOURCE_URL: jdbc:mysql://fonyou-mysql:3306/fonyou?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+      # SPRING_DATASOURCE_URL: mongodb://root:Test123@fonyou-mongo:27017/fonyou-mongo
+      # SPRING_DATASOURCE_USERNAME: root
+      # SPRING_DATASOURCE_PASSWORD: Test123
     networks: # Networks to join (Services on the same network can communicate with each other using their name)
       - backend
 
 volumes:
   fonyou-data:
+  fonyou-mongo-data:
 
 networks: 
   backend:

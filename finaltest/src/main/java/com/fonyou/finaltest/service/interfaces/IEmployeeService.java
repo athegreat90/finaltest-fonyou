@@ -10,7 +10,7 @@ public interface IEmployeeService
 	
 	public EmployeeDto findById(String id) throws Exception;
 	
-	public int save(EmployeeDto body) throws Exception;
+	public String save(EmployeeDto body) throws Exception;
 	
 	public boolean update(String id, EmployeeDto body) throws Exception;
 	

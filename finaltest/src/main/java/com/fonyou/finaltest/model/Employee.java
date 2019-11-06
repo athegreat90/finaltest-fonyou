@@ -3,18 +3,21 @@ package com.fonyou.finaltest.model;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-import javax.persistence.Cacheable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
+
+// import javax.persistence.Cacheable;
+// import javax.persistence.Column;
+// import javax.persistence.Entity;
+// import javax.persistence.GeneratedValue;
+// import javax.persistence.GenerationType;
+// import javax.persistence.Id;
+// import javax.persistence.Table;
 
 
-@Entity
-@Cacheable(false)
-@Table(name = "employee")
+// @Entity
+// @Cacheable(false)
+// @Table(name = "employee")
 public class Employee  implements Serializable
 {
 	/**
@@ -23,23 +26,23 @@ public class Employee  implements Serializable
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="id", unique = true, nullable = false)
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	// @Column(name="id", unique = true, nullable = false)
+	// @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private ObjectId id;
 	
-	@Column(name = "first_name", length = 450, nullable = false)
+	// @Column(name = "first_name", length = 450, nullable = false)
 //	@NotBlank(message = "First name is mandatory")
 	private String firstName;
 	
-	@Column(name = "last_name", length = 450, nullable = false)
+	// @Column(name = "last_name", length = 450, nullable = false)
 //	@NotBlank(message = "Last name is mandatory")
 	private String lastName;
 	
-	@Column(name = "date_birth", length = 45, nullable = false)
+	// @Column(name = "date_birth", length = 45, nullable = false)
 //	@NotBlank(message = "Date birth is mandatory")
 	private String birthDate;
 	
-	@Column(name = "salary", nullable = false)
+	// @Column(name = "salary", nullable = false)
 	private BigDecimal salary;
 
 	public Employee()
@@ -47,7 +50,7 @@ public class Employee  implements Serializable
 		super();
 	}
 
-	public Employee(int id, String firstName, String lastName, String birthDate, BigDecimal salary)
+	public Employee(ObjectId id, String firstName, String lastName, String birthDate, BigDecimal salary)
 	{
 		super();
 		this.id = id;
@@ -57,12 +60,12 @@ public class Employee  implements Serializable
 		this.salary = salary;
 	}
 
-	public int getId()
+	public ObjectId getId()
 	{
 		return id;
 	}
 
-	public void setId(int id)
+	public void setId(ObjectId id)
 	{
 		this.id = id;
 	}

@@ -2,7 +2,7 @@ package com.fonyou.finaltest.dto;
 
 public class EmployeeDto
 {
-	private int id;
+	private String id;
 	
 	private String firstName;
 	
@@ -17,7 +17,7 @@ public class EmployeeDto
 		super();
 	}
 
-	public EmployeeDto(int id, String firstName, String lastName, String birthDate, Double salary)
+	public EmployeeDto(String id, String firstName, String lastName, String birthDate, Double salary)
 	{
 		super();
 		this.id = id;
@@ -27,12 +27,12 @@ public class EmployeeDto
 		this.salary = salary;
 	}
 
-	public int getId()
+	public String getId()
 	{
 		return id;
 	}
 
-	public void setId(int id)
+	public void setId(String id)
 	{
 		this.id = id;
 	}

@@ -1,8 +1,5 @@
 package com.fonyou.finaltest.controller;
 
-import javax.persistence.NoResultException;
-
-import org.hibernate.exception.JDBCConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -33,28 +30,7 @@ public class ErrorController
 		ResponseGenericDto<String> body = new ResponseGenericDto<>("1", "Failed validation", exception.getMessage(), false);
 		return new ResponseEntity<>(body, HttpStatus.PRECONDITION_REQUIRED);
 	}
-	
-	/**
-	 * Handle NoResultException.
-	 *
-	 * @param exception the exception
-	 * @return the message of the error
-	 */
-	@ExceptionHandler
-	public ResponseEntity<ResponseGenericDto<String>> handleException(NoResultException exception)
-	{
-		LOGGER.error(exception.getMessage(), exception);
-		ResponseGenericDto<String> body = new ResponseGenericDto<>("1", "Failed content", exception.getMessage(), false);
-		return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
-	}
-	
-	@ExceptionHandler
-	public ResponseEntity<ResponseGenericDto<String>> handleException(JDBCConnectionException exception)
-	{
-		LOGGER.error(exception.getMessage(), exception);
-		ResponseGenericDto<String> body = new ResponseGenericDto<>("1", "Failed content", "Error with the database", false);
-		return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
-	}
+
 	
 	@ExceptionHandler
 	public ResponseEntity<ResponseGenericDto<String>> handleException(NullPointerException exception)

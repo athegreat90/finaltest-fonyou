@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
-import javax.persistence.NoResultException;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -69,24 +68,14 @@ public class EmployeeService implements IEmployeeService
 	@Override
 	public EmployeeDto findById(String id) throws Exception
 	{
-		validateId(id);
-		Integer idT = Integer.parseInt(id);
-		Optional<Employee> employee = this.repo.findById(idT);
+		Optional<Employee> employee = this.repo.findById(id);
 		if (employee.isPresent())
 		{
 			return this.modelMapper.map(employee.get(), EmployeeDto.class);
 		}
 		else
 		{
-			throw new NoResultException("The employee with id: " + id + " doesn't exists");
-		}
-	}
-
-	private void validateId(String id) throws Exception {
-		String errorId = this.validation.validateId(id);
-		if (!errorId.isEmpty() || errorId.length() > 0)
-		{
-			throw new IllegalArgumentException(errorId);
+			throw new Exception("The employee with id: " + id + " doesn't exists");
 		}
 	}
 
@@ -98,12 +87,12 @@ public class EmployeeService implements IEmployeeService
 	 * @throws Exception the exception
 	 */
 	@Override
-	public int save(EmployeeDto body) throws Exception
+	public String save(EmployeeDto body) throws Exception
 	{
 		validateData(body);
 		Employee entity = this.modelMapper.map(body, Employee.class);
-		entity = this.repo.saveAndFlush(entity);
-		return entity.getId();
+		entity = this.repo.save(entity);
+		return entity.getId().toString();
 	}
 
 	private void validateData(EmployeeDto body) throws Exception
@@ -132,29 +121,26 @@ public class EmployeeService implements IEmployeeService
 	public boolean update(String id, EmployeeDto body) throws Exception
 	{
 		String errorId = this.validation.validateId(id);
-		if (!errorId.isEmpty() || errorId.length() > 0)
-		{
+		if (!errorId.isEmpty() || errorId.length() > 0) {
 			throw new IllegalArgumentException(errorId);
 		}
-		Integer idT = Integer.parseInt(id);
-
 		validateData(body);
-		if (body.getId() < 0)
+		if (body.getId().isEmpty())
 		{
-			body.setId(idT);
+			body.setId(id);
 		}
 		
-		Optional<Employee> savedEmployee = this.repo.findById(idT);
+		Optional<Employee> savedEmployee = this.repo.findById(id);
 		
 		if (savedEmployee.isPresent())
 		{
 			Employee entity = this.modelMapper.map(body, Employee.class);
-			this.repo.saveAndFlush(entity);
+			this.repo.save(entity);
 			return true;
 		}
 		else 
 		{
-			throw new NoResultException("The employee with id: " + id + " doesn't exists");
+			throw new Exception("The employee with id: " + id + " doesn't exists");
 		}
 	}
 
@@ -168,9 +154,7 @@ public class EmployeeService implements IEmployeeService
 	@Override
 	public String delete(String id) throws Exception
 	{
-		validateId(id);
-		Integer idT = Integer.parseInt(id);
-		Optional<Employee> employee = this.repo.findById(idT);
+		Optional<Employee> employee = this.repo.findById(id);
 		if (employee.isPresent())
 		{
 			this.repo.delete(employee.get());
@@ -178,7 +162,7 @@ public class EmployeeService implements IEmployeeService
 		}
 		else
 		{
-			throw new NoResultException("The employee with id: " + id + " doesn't exists");
+			throw new Exception("The employee with id: " + id + " doesn't exists");
 		}
 	}
 
