@@ -36,7 +36,9 @@ services:
     restart: always
     depends_on:
       - fonyou-mongo
-    # environment: # Pass environment variables to the service
+    environment: # Pass environment variables to the service
+      SPRING_DATA_MONGODB_URI: mongodb://root:Test123@fonyou-mongo:27017/fonyou-mongo?ssl=false&authSource=admin&authMechanism=SCRAM-SHA-1
+      SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
       # SPRING_DATASOURCE_URL: jdbc:mysql://fonyou-mysql:3306/fonyou?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
       # SPRING_DATASOURCE_URL: mongodb://root:Test123@fonyou-mongo:27017/fonyou-mongo
       # SPRING_DATASOURCE_USERNAME: root

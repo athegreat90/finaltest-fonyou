@@ -5,18 +5,19 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.0.RELEASE</version>
+		<version>2.2.1.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.fonyou</groupId>
 	<artifactId>finaltest</artifactId>
-	<version>1.0</version>
+	<version>1.0.4</version>
 	<name>finaltest</name>
 	<description>Demo project for Fonyou</description>
 
 	<properties>
 		<java.version>1.8</java.version>
-		<docker.image.prefix>fonyou</docker.image.prefix>
+		<docker.image.prefix>athegreat90</docker.image.prefix>
+		<docker.image.name>finaltest</docker.image.name>
 	</properties>
 
 	<dependencies>
@@ -24,10 +25,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency> -->
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -68,6 +66,7 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -77,13 +76,99 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.31.0</version>
+				<configuration>
+					<dockerHost>unix:///var/run/docker.sock</dockerHost>
+					<verbose>true</verbose>
+					<images>
+						<image>
+							<name>${docker.image.prefix}/${docker.image.name}</name>
+							<build>
+								<dockerFileDir>${project.basedir}/target/dockerfile/</dockerFileDir>
+                                <!--copies artficact to docker build dir in target-->
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+								</assembly>
+								<tags>
+									<tag>latest</tag>
+									<tag>${project.version}</tag>
+								</tags>
+							</build>
+							<run>
+								<ports>
+									<port>8080:8080</port>
+								</ports>
+								<env>
+									<SPRING_DATA_MONGODB_URI>mongodb://root:Test123@mongodb-fonyou:27017/fonyou-mongo?ssl=false&amp;authSource=admin&amp;authMechanism=SCRAM-SHA-1</SPRING_DATA_MONGODB_URI>
+									<SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE>admin</SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE>
+								</env>
+								<links>
+									<link>mongodb-fonyou:mongodb-fonyou</link>
+								</links>
+								<dependsOn>
+									<container>mongodb-fonyou</container>
+								</dependsOn>
+							</run>
+
+						</image>
+						<image>
+							<name>mongo</name>
+							<alias>mongodb-fonyou</alias>
+							<run>
+								<ports>
+									<port>27017:27017</port>
+								</ports>
+								<wait>
+									<time>10000</time>
+								</wait>
+								<env>
+									<MONGO_INITDB_ROOT_USERNAME>root</MONGO_INITDB_ROOT_USERNAME>
+									<MONGO_INITDB_ROOT_PASSWORD>Test123</MONGO_INITDB_ROOT_PASSWORD>
+								</env>
+							</run>
+
+
+						</image>
+					</images>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.gmavenplus</groupId>
+				<artifactId>gmavenplus-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<scripts>
+						<script>file:///${project.basedir}/src/main/scripts/BuildDockerfile.groovy</script>
+					</scripts>
+				</configuration>
+				<dependencies>
+					<!-- https://mvnrepository.com/artifact/org.codehaus.groovy/groovy-all -->
+					<dependency>
+						<groupId>org.codehaus.groovy</groupId>
+						<artifactId>groovy-all</artifactId>
+						<version>2.4.8</version>
+						<scope>runtime</scope>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<!-- <plugin>
 	            <groupId>com.spotify</groupId>
 	            <artifactId>dockerfile-maven-plugin</artifactId>
 	            <version>1.4.9</version>
 	            <configuration>
 	                <repository>${docker.image.prefix}/${project.artifactId}</repository>
 	            </configuration>
-	        </plugin>
+	        </plugin> -->
 	  
 		</plugins>
 	</build>

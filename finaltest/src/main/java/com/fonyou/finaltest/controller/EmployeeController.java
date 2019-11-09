@@ -71,7 +71,7 @@ public class EmployeeController
 	@PostMapping("/")
 	public ResponseGenericDto<String> saveEmployee(@RequestBody EmployeeDto body) throws Exception
 	{
-		return new ResponseGenericDto<>("0", "OK", "The new employee was created correcty: " + this.service.save(body), true);
+		return new ResponseGenericDto<>("0", "OK", "The new employee was created correctly: " + this.service.save(body), true);
 	}
 	
 	/**
