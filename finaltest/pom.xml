@@ -10,13 +10,14 @@
 	</parent>
 	<groupId>com.fonyou</groupId>
 	<artifactId>finaltest</artifactId>
-	<version>1.0</version>
+	<version>1.0.1</version>
 	<name>finaltest</name>
 	<description>Demo project for Fonyou</description>
 
 	<properties>
 		<java.version>1.8</java.version>
-		<docker.image.prefix>fonyou</docker.image.prefix>
+		<docker.image.prefix>athegreat90</docker.image.prefix>
+		<docker.image.name>finaltest</docker.image.name>
 	</properties>
 
 	<dependencies>
@@ -73,13 +74,39 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.31.0</version>
+				<configuration>
+					<dockerHost>unix:///var/run/docker.sock</dockerHost>
+					<verbose>true</verbose>
+					<images>
+						<image>
+							<name>${docker.image.prefix}/${docker.image.name}</name>
+							<build>
+								<dockerFileDir>${project.basedir}/src/main/docker/</dockerFileDir>
+                                <!--copies artficact to docker build dir in target-->
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+								</assembly>
+								<tags>
+									<tag>latest</tag>
+									<tag>${project.version}</tag>
+								</tags>
+							</build>
+						</image>
+					</images>
+				</configuration>
+			</plugin>
+			
+			<!-- <plugin>
 	            <groupId>com.spotify</groupId>
 	            <artifactId>dockerfile-maven-plugin</artifactId>
 	            <version>1.4.9</version>
 	            <configuration>
 	                <repository>${docker.image.prefix}/${project.artifactId}</repository>
 	            </configuration>
-	        </plugin>
+	        </plugin> -->
 	  
 		</plugins>
 	</build>

@@ -8,7 +8,7 @@ services:
       MYSQL_ROOT_PASSWORD: Test123
       MYSQL_ROOT_HOST: '%'
     ports:
-    - "3306:3306"
+    - "3307:3306"
     volumes:
       - fonyou-data:/var/lib/mysql
     networks: 
