@@ -1,11 +1,13 @@
 package com.fonyou.finaltest.service.impl;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
+import com.fonyou.finaltest.util.MessageProperties;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,9 @@ public class EmployeeService implements IEmployeeService
 	/** The validation. */
 	@Autowired
 	private IValidationEmployee validation;
+
+	@Autowired
+	private MessageProperties messageProperties;
 	
 	/** To transform class in another class. */
 	private ModelMapper modelMapper;
@@ -164,6 +169,21 @@ public class EmployeeService implements IEmployeeService
 		{
 			throw new Exception("The employee with id: " + id + " doesn't exists");
 		}
+	}
+
+	@Override
+	public List<String> getMessages()
+	{
+		List<String> list = new ArrayList<>();
+		list.add("okMessage = " + messageProperties.getOkMsg());
+		list.add("failedMessage = " + messageProperties.getFailedMsg());
+		return list;
+	}
+
+	@Override
+	public void resetProperties()
+	{
+		this.messageProperties.init();
 	}
 
 }

@@ -15,4 +15,8 @@ public interface IEmployeeService
 	public boolean update(String id, EmployeeDto body) throws Exception;
 	
 	public String delete(String id) throws Exception;
+
+	public List<String> getMessages();
+
+	public void resetProperties();
 }

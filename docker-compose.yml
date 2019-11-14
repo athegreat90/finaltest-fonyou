@@ -1,19 +1,5 @@
-version: '3.7'
+version: "3.7"
 services:
-  # fonyou-mysql:
-  #   image: mysql
-  #   restart: always
-  #   environment:
-  #     MYSQL_DATABASE: fonyou
-  #     MYSQL_ROOT_PASSWORD: Test123
-  #     MYSQL_ROOT_HOST: '%'
-  #   ports:
-  #   - "3306:3306"
-  #   volumes:
-  #     - fonyou-data:/var/lib/mysql
-  #   networks: 
-  #     - backend
-
   fonyou-mongo:
     image: mongo
     restart: always
@@ -36,9 +22,14 @@ services:
     restart: always
     depends_on:
       - fonyou-mongo
+    volumes: 
+      - fonyou-app:/opt
     environment: # Pass environment variables to the service
       SPRING_DATA_MONGODB_URI: mongodb://root:Test123@fonyou-mongo:27017/fonyou-mongo?ssl=false&authSource=admin&authMechanism=SCRAM-SHA-1
       SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE: admin
+      BUSINESS_PROPERTIES_FILE_NAME: /Users/alvaroagudelo/Documents/sirius.properties
+      # MAIN_MESSAGE_OKMSG: "Mensaje super exitoso desde docker compose"
+      # MAIN_MESSAGE_FAILEDMSG: "Mensaje super mega pailas, suerte desde docker compose"
       # SPRING_DATASOURCE_URL: jdbc:mysql://fonyou-mysql:3306/fonyou?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
       # SPRING_DATASOURCE_URL: mongodb://root:Test123@fonyou-mongo:27017/fonyou-mongo
       # SPRING_DATASOURCE_USERNAME: root
@@ -47,8 +38,8 @@ services:
       - backend
 
 volumes:
-  fonyou-data:
   fonyou-mongo-data:
+  fonyou-app:
 
 networks: 
   backend:

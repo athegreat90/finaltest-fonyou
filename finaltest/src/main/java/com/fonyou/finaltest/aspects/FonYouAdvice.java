@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class FonYouAdvice
 {
-
 	private static final Logger logger = LoggerFactory.getLogger(FonYouAdvice.class);
 
 	@AfterThrowing(pointcut = "execution(* com.fonyou.finaltest.service.impl.EmployeeService.*(..))", throwing = "error")
@@ -23,7 +22,13 @@ public class FonYouAdvice
 		logger.info("Method Signature: {}", jp.getSignature());
 		logger.info("Exception: {}", error.getMessage());
 	}
-	
+	@Before(value = "execution(* com.fonyou.finaltest.controller.EmployeeController.*(..))")
+	public void beforeController(JoinPoint joinPoint)
+	{
+		logger.info("Before execution of method (Signature): {}", joinPoint.getSignature());
+
+	}
+
 	@Before(value = "execution(* com.fonyou.finaltest.service.impl.EmployeeService.*(..))")
 	public void before(JoinPoint joinPoint) 
 	{

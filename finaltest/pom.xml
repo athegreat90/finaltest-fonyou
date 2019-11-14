@@ -6,11 +6,13 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.2.1.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
-	<groupId>com.fonyou</groupId>
+		<relativePath/> 
+	</parent> 
+
+
+	<groupId>com.fonyou.sirius</groupId>
 	<artifactId>finaltest</artifactId>
-	<version>1.0.4</version>
+	<version>1.0.5.8</version>
 	<name>finaltest</name>
 	<description>Demo project for Fonyou</description>
 
@@ -18,6 +20,7 @@
 		<java.version>1.8</java.version>
 		<docker.image.prefix>athegreat90</docker.image.prefix>
 		<docker.image.name>finaltest</docker.image.name>
+		<root-utils-lib>3.9</root-utils-lib>
 	</properties>
 
 	<dependencies>
@@ -40,6 +43,11 @@
 		    <groupId>org.modelmapper</groupId>
 		    <artifactId>modelmapper</artifactId>
 		    <version>2.3.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fonyou.root</groupId>
+			<artifactId>root-utils-lib</artifactId>
+			<version>${root-utils-lib}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -96,13 +104,15 @@
 									<tag>${project.version}</tag>
 								</tags>
 							</build>
+
 							<run>
 								<ports>
-									<port>8080:8080</port>
+									<port>80:8080</port>
 								</ports>
 								<env>
 									<SPRING_DATA_MONGODB_URI>mongodb://root:Test123@mongodb-fonyou:27017/fonyou-mongo?ssl=false&amp;authSource=admin&amp;authMechanism=SCRAM-SHA-1</SPRING_DATA_MONGODB_URI>
 									<SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE>admin</SPRING_DATA_MONGODB_AUTHENTICATION_DATABASE>
+									<BUSINESS_PROPERTIES_FILE_NAME>file:///Users/alvaroagudelo/Documents/sirius.properties</BUSINESS_PROPERTIES_FILE_NAME>
 								</env>
 								<links>
 									<link>mongodb-fonyou:mongodb-fonyou</link>
@@ -111,7 +121,6 @@
 									<container>mongodb-fonyou</container>
 								</dependsOn>
 							</run>
-
 						</image>
 						<image>
 							<name>mongo</name>
@@ -128,10 +137,16 @@
 									<MONGO_INITDB_ROOT_PASSWORD>Test123</MONGO_INITDB_ROOT_PASSWORD>
 								</env>
 							</run>
-
-
 						</image>
 					</images>
+<!--					<volumes>-->
+<!--						<bind>-->
+<!--							<volume>/Users/alvaroagudelo/Documents/:/tmp</volume>-->
+<!--						</bind>-->
+<!--						<from>-->
+<!--							<image>athegreat90/finaltest</image>-->
+<!--						</from>-->
+<!--					</volumes>-->
 				</configuration>
 			</plugin>
 			<plugin>

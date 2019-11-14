@@ -1,7 +1,10 @@
-package com.fonyou.finaltest;
+package com.fonyou.finaltest.config;
 
 import java.io.IOException;
 
+import com.fonyou.root.utils.lib.interfaces.LogUtilsInterface;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -42,6 +45,12 @@ public class WebMvcConfig implements WebMvcConfigurer
 	{
 		registry.addMapping("/**");
 	}
-	
+
+	@Bean
+	public CustomConfigWatcher configWatcher(@Value("${business.properties.name}") String propertiesFilename,
+			@Value("${business.properties.charset:UTF-8}") String propertiesCharset)
+	{
+		return new CustomConfigWatcher(propertiesFilename, propertiesCharset);
+	}
 	
 }
