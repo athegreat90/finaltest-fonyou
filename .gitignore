@@ -32,3 +32,4 @@ finaltest/fonyou/error.log
 .DS_Store
 finaltest/fonyou/error.log.2019-11-12.0.gz
 finaltest/fonyou/error.log.2019-11-13.0.gz
+*.gz
