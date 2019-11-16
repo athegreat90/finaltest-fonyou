@@ -1,4 +1,4 @@
-package com.fonyou.finaltest.util;
+package com.fonyou.finaltest.util.properties;
 
 import com.fonyou.finaltest.config.CustomConfigWatcher;
 import com.fonyou.root.utils.lib.interfaces.GsonUtilsInterface;

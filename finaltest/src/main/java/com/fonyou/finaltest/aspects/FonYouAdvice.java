@@ -35,6 +35,60 @@ public class FonYouAdvice
 		logger.info("Before execution of method (Signature): {}", joinPoint.getSignature());
 		
 	}
+
+	@Before(value = "execution(* com.fonyou.finaltest.util.properties.ConnectionProperties.*(..))")
+	public void beforeRedisConfig(JoinPoint joinPoint)
+	{
+		logger.info("Before execution of method (Signature): {}", joinPoint.getSignature());
+		Object[] args = joinPoint.getArgs();
+		String result = "";
+		for (Object arg : args)
+		{
+			logger.info("arg: {}", arg);
+			result += arg.toString() + ", ";
+		}
+		logger.info("The arguments: {}", result.trim());
+	}
+
+	@Before(value = "execution(* com.fonyou.finaltest.util.properties.MessageProperties.*(..))")
+	public void beforeMessageConfig(JoinPoint joinPoint)
+	{
+		logger.info("Before execution of method (Signature): {}", joinPoint.getSignature());
+		Object[] args = joinPoint.getArgs();
+		String result = "";
+		for (Object arg : args)
+		{
+			logger.info("arg: {}", arg);
+			result += arg.toString() + ", ";
+		}
+		logger.info("The arguments: {}", result.trim());
+	}
+
+	@Before(value = "execution(* com.fonyou.finaltest.repo.MemoryStoreDao.*(..))")
+	public void beforeRedisProcess(JoinPoint joinPoint)
+	{
+		logger.info("Before execution of method (Signature): {}", joinPoint.getSignature());
+		Object[] args = joinPoint.getArgs();
+		String result = "";
+		for (Object arg : args)
+		{
+			logger.info("arg: {}", arg);
+			result += arg.toString() + ", ";
+		}
+		logger.info("The arguments: {}", result.trim());
+	}
+
+	@AfterReturning(value = "execution(* com.fonyou.finaltest.util.properties.ConnectionProperties.*(..))", returning = "result")
+	public void afterConfigRedis(JoinPoint joinPoint, Object result)
+	{
+		logger.info("After execution of {} - Result: {}", joinPoint.getSignature(), result);
+	}
+
+	@AfterReturning(value = "execution(* com.fonyou.finaltest.repo.MemoryStoreDao.*(..))", returning = "result")
+	public void afterMemoryDao(JoinPoint joinPoint, Object result)
+	{
+		logger.info("After execution of {} - Result: {}", joinPoint.getSignature(), result);
+	}
 	
 	@Before(value = "execution(* com.fonyou.finaltest.util.ValidationEmployee.*(..))")
 	public void beforeValidation(JoinPoint joinPoint) 

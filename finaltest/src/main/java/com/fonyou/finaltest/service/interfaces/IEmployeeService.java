@@ -19,4 +19,12 @@ public interface IEmployeeService
 	public List<String> getMessages();
 
 	public void resetProperties();
+
+	public EmployeeDto findByIdRedis(String id) throws Exception;
+
+	public String saveRedis(EmployeeDto body) throws Exception;
+
+	public String updateRedis(String id, EmployeeDto body) throws Exception;
+
+	public String deleteRedis(String id) throws Exception;
 }

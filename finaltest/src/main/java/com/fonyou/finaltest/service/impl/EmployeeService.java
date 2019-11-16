@@ -7,7 +7,8 @@ import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
-import com.fonyou.finaltest.util.MessageProperties;
+import com.fonyou.finaltest.repo.MemoryStoreDao;
+import com.fonyou.finaltest.util.properties.MessageProperties;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class EmployeeService implements IEmployeeService
 	/** The employee repository. */
 	@Autowired
 	private IEmployeeRepo repo;
+
+	@Autowired
+	private MemoryStoreDao repoRedis;
 	
 	/** The validation. */
 	@Autowired
@@ -184,6 +188,51 @@ public class EmployeeService implements IEmployeeService
 	public void resetProperties()
 	{
 		this.messageProperties.init();
+	}
+
+	@Override
+	public EmployeeDto findByIdRedis(String id) throws Exception
+	{
+		String errorId = this.validation.validateId(id);
+		if (!errorId.isEmpty() || errorId.length() > 0)
+		{
+			throw new IllegalArgumentException(errorId);
+		}
+		return this.repoRedis.getEmployee(id);
+	}
+
+	@Override
+	public String saveRedis(EmployeeDto body) throws Exception
+	{
+		this.validateData(body);
+
+		return this.repoRedis.saveEmployee(body) ? "The new employee was created successfuly" : "Failed to save";
+	}
+
+	@Override
+	public String updateRedis(String id, EmployeeDto body) throws Exception
+	{
+		String errorId = this.validation.validateId(id);
+		if (!errorId.isEmpty() || errorId.length() > 0)
+		{
+			throw new IllegalArgumentException(errorId);
+		}
+
+		this.validateData(body);
+
+		return this.repoRedis.saveEmployee(body) ? "The new employee was created successfuly" : "Failed to update";
+	}
+
+	@Override
+	public String deleteRedis(String id) throws Exception
+	{
+		String errorId = this.validation.validateId(id);
+		if (!errorId.isEmpty() || errorId.length() > 0)
+		{
+			throw new IllegalArgumentException(errorId);
+		}
+
+		return this.repoRedis.deleteEmployee(id) ? "The employee was removed successfuly" : "Failed to remove";
 	}
 
 }
